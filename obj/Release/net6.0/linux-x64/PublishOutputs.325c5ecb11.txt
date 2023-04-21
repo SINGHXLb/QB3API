@@ -1,0 +1,7 @@
+C:\Repos\QB3API\bin\Release\net6.0\publish\QB3API.deps.json
+C:\Repos\QB3API\bin\Release\net6.0\publish\QB3API.runtimeconfig.json
+C:\Repos\QB3API\bin\Release\net6.0\publish\QB3API.pdb
+C:\Repos\QB3API\bin\Release\net6.0\publish\Amazon.Lambda.APIGatewayEvents.dll
+C:\Repos\QB3API\bin\Release\net6.0\publish\Amazon.Lambda.Core.dll
+C:\Repos\QB3API\bin\Release\net6.0\publish\Amazon.Lambda.Serialization.SystemTextJson.dll
+C:\Repos\QB3API\bin\Release\net6.0\publish\QB3API.dll

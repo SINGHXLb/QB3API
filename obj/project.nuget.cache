@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "lcsbCWp17XkM4RWviKLX7MYQFrSZGT7n3CGQYO6E3jQ0dAyYBo9MwQ8wi501s+jq2R6jelVnXCJP69sGF6AXPQ==",
+  "success": true,
+  "projectFilePath": "C:\\Repos\\QB3API\\QB3API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\patwal\\.nuget\\packages\\amazon.lambda.apigatewayevents\\2.6.0\\amazon.lambda.apigatewayevents.2.6.0.nupkg.sha512",
+    "C:\\Users\\patwal\\.nuget\\packages\\amazon.lambda.core\\2.1.0\\amazon.lambda.core.2.1.0.nupkg.sha512",
+    "C:\\Users\\patwal\\.nuget\\packages\\amazon.lambda.serialization.systemtextjson\\2.3.1\\amazon.lambda.serialization.systemtextjson.2.3.1.nupkg.sha512",
+    "C:\\Users\\patwal\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\6.0.16\\microsoft.netcore.app.crossgen2.win-x64.6.0.16.nupkg.sha512"
+  ],
+  "logs": []
+}
