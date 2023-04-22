@@ -57,9 +57,7 @@ public class Functions
 
 
 
-            var _token = new UserTokens();
-            _token.RefreshToken = Guid.NewGuid().ToString();
-            _token.Token = Guid.NewGuid().ToString();
+            var _token = GenerateToken(user); 
 
              response = new APIGatewayProxyResponse
             {
@@ -80,7 +78,11 @@ public class Functions
         return response;
     }
 
-
+    /// <summary>
+    /// todo : Authenticate every request to API.
+    /// </summary>
+    /// <param name="userLogin"></param>
+    /// <returns></returns>
     private User? Authenticate(User userLogin)
     {
         var currentUser = userLogin;
@@ -94,9 +96,14 @@ public class Functions
         }
      }
 
+    /// <summary>
+    /// TODO: use asymetirc private key for singnature. public key to be make available by Endpoint.  
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     private string GenerateToken(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("QB"));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("werr2342342342343434343erwerwerwrwerwerewrr43434343243344"));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var claims = new[]
         {
