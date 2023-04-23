@@ -47,22 +47,27 @@ public class Functions
         {
             Email = request.Headers.Where(x=>x.Key=="user").First().Value
         };
-         
 
-        var user = Authenticate(userLogin);
+
+        User? user = Authenticate(userLogin);
         var response = new APIGatewayProxyResponse();
              
         if (user != null)
         {
+             
+           
+           var  _userToken = QB3API.Helper.JwtHelpers.GenTokenkey(user, new JwtSettings 
+            {
+                 IssuerSigningKey = "wdfesfdsfsfdsfsdfdsfdsfdsfdsfsdf"
+                 
+            })
+                
+                ;
 
-
-
-            var _token = GenerateToken(user); 
-
-             response = new APIGatewayProxyResponse
+            response = new APIGatewayProxyResponse
             {
                 StatusCode = (int)HttpStatusCode.OK,
-                Body = JsonSerializer.Serialize(_token), //; "Hello AWS Serverless",
+                Body = JsonSerializer.Serialize(_userToken), //; "Hello AWS Serverless",
                 Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
             };
         }
@@ -101,25 +106,24 @@ public class Functions
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    private string GenerateToken(User user)
-    {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("werr2342342342343434343erwerwerwrwerwerewrr43434343243344"));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var claims = new[]
-        {
-                new Claim(ClaimTypes.NameIdentifier,user.Email),
-                new Claim(ClaimTypes.Role,"user")
-            };
+    //private string GenerateToken(User user)
+    //{
+    //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("werr2342342342343434343erwerwerwrwerwerewrr43434343243344"));
+    //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+    //    var claims = new[]
+    //    {
+    //            new Claim(ClaimTypes.NameIdentifier,user.Email),
+    //            new Claim(ClaimTypes.Role,"user")
+    //        };
 
-        var token = new JwtSecurityToken("QBAPI","QBAPI",
-            claims,
-            expires: DateTime.Now.AddMinutes(15),
-            signingCredentials: credentials);
+    //    var token = new JwtSecurityToken("QBAPI","QBAPI",
+    //        claims,
+    //        expires: DateTime.Now.AddMinutes(15),
+    //        signingCredentials: credentials);
 
+    //    return new JwtSecurityTokenHandler().WriteToken(token);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
-
-    }
+    //}
 
 
 }
