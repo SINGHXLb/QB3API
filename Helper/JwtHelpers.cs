@@ -2,59 +2,54 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using QB3API.Model.Security;
+using QB3API.Model;
 
-    namespace QB3API.Helper
+namespace QB3API.Helper
     {
         public static class JwtHelpers
         {
-            public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, Guid Id)
+            public static IEnumerable<Claim> GetClaims(this User  user)
             {
                 IEnumerable<Claim> claims = new Claim[] {
-                new Claim("Id", userAccounts.Id.ToString()),
-                    new Claim(ClaimTypes.Name, userAccounts.UserName),
-                    new Claim(ClaimTypes.Email, userAccounts.EmailId),
-                    new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
-                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))
+                    new Claim(ClaimTypes.Name, user.FirstName) 
             };
                 return claims;
             }
-            public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, out Guid Id)
+          
+            public static UserTokens GenTokenkey(User model, JwtSettings jwtSettings)
             {
-                Id = Guid.NewGuid();
-                return GetClaims(userAccounts, Id);
+            try
+            {
+                var UserToken = new UserTokens();
+                if (model == null) throw new ArgumentException(nameof(model));
+                // Get secret key
+                var key = System.Text.Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey); 
+                DateTime expireTime = DateTime.UtcNow.AddDays(1);
+                DateTime expireTimeMin = DateTime.UtcNow.AddMinutes(20);
+                
+                UserToken.ValidTill = expireTime;
+                
+                UserToken.AccessToken = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                    claims: GetClaims(model),//TODO : Add claimes. 
+                    notBefore: new DateTimeOffset(DateTime.Now).DateTime,
+                    expires: new DateTimeOffset(expireTimeMin).DateTime,  
+                    
+                    signingCredentials: new SigningCredentials(
+                                new SymmetricSecurityKey(key),
+                                SecurityAlgorithms.HmacSha256)));
+
+                 
+                UserToken.RefreshToken = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(  
+                    expires: new DateTimeOffset(expireTime).DateTime, 
+                    signingCredentials: new SigningCredentials(
+                                new SymmetricSecurityKey(key),
+                                SecurityAlgorithms.HmacSha256)));
+                return UserToken;
             }
-            public static UserTokens GenTokenkey(UserTokens model, JwtSettings jwtSettings)
+            catch (Exception)
             {
-                try
-                {
-                    var UserToken = new UserTokens();
-                    if (model == null) throw new ArgumentException(nameof(model));
-                    // Get secret key
-                    var key = System.Text.Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey);
-                    Guid Id = Guid.Empty;
-                    DateTime expireTime = DateTime.UtcNow.AddDays(1);
-                    UserToken.Validaty = expireTime.TimeOfDay;
-                    var JWToken 
-                    = new JwtSecurityToken(issuer: jwtSettings.ValidIssuer, 
-                        audience: jwtSettings.ValidAudience, 
-                        claims: GetClaims(model, out Id),
-                        notBefore: new DateTimeOffset(DateTime.Now).DateTime, 
-                        expires: new DateTimeOffset(expireTime).DateTime, 
-                        signingCredentials: new SigningCredentials(
-                                    new SymmetricSecurityKey(key), 
-                                    SecurityAlgorithms.HmacSha256));
-                    UserToken.Token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-                    UserToken.UserName = model.UserName;
-                    UserToken.Id = model.Id;
-                    UserToken.EmailId = model.EmailId;
-                    UserToken.RefreshToken = model.RefreshToken;
-                    UserToken.Guid = model.Guid;
-                    return UserToken;
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+                throw;
+            }
             }
         }
     }

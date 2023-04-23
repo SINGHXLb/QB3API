@@ -5,24 +5,16 @@
     {
         public UserTokens() 
         {
-            this.Token= "XXXX";
-            this.UserName = "XXXX";
+            this.AccessToken= "XXXX";
             this.RefreshToken = "XXXX";
-            this.Id = "XXXX";
-            this.EmailId = "XXXX";
-
         }
-        public string Token
+        public string AccessToken
         {
             get;
             set;
         }
-        public string UserName
-        {
-            get;
-            set;
-        }
-        public TimeSpan Validaty
+      
+        public DateTime ValidTill
         {
             get;
             set;
@@ -32,25 +24,6 @@
             get;
             set;
         }
-        public string  Id
-        {
-            get;
-            set;
-        }
-        public string EmailId
-        {
-            get;
-            set;
-        }
-        public Guid Guid
-        {
-            get;
-            set;
-        }
-        public DateTime ExpiredTime
-        {
-            get;
-            set;
-        }
+      
     }
 }
